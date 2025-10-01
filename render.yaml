@@ -1,9 +1,0 @@
-services:
-  - type: web
-    name: super-recetario-api
-    env: node
-    plan: free
-    buildCommand: npm install
-    startCommand: npm start
-    nodeVersion: 18.20.2
-    autoDeploy: true
