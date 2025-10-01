@@ -1,13 +1,15 @@
-require('dotenv').config();
+require('dotenv').config(); // Carga variables desde .env en local
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Conexión a MongoDB Atlas
+// Conexión a MongoDB Atlas usando variable de entorno
 mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
@@ -16,7 +18,7 @@ mongoose
   .then(() => console.log('✅ Conectado a MongoDB Atlas'))
   .catch((err) => console.error('❌ Error de conexión:', err));
 
-// Esquema y modelo
+// Esquema y modelo de receta
 const recetaSchema = new mongoose.Schema({
   nombre: String,
   descripcion: String,
@@ -29,7 +31,7 @@ const recetaSchema = new mongoose.Schema({
 
 const Receta = mongoose.model('Receta', recetaSchema);
 
-// Ruta GET
+// Ruta GET para obtener todas las recetas
 app.get('/api/recetas', async (req, res) => {
   try {
     const recetas = await Receta.find();
@@ -39,7 +41,7 @@ app.get('/api/recetas', async (req, res) => {
   }
 });
 
-// Ruta POST
+// Ruta POST para agregar una receta
 app.post('/api/recetas', async (req, res) => {
   try {
     const nuevaReceta = new Receta(req.body);
@@ -50,7 +52,7 @@ app.post('/api/recetas', async (req, res) => {
   }
 });
 
-// Puerto
+// Puerto para Render o local
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
